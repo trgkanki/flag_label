@@ -6,14 +6,56 @@
 # License: GNU AGPL, version 3 or later;
 # See http://www.gnu.org/licenses/agpl.html
 
-from aqt.editor import Editor
+from aqt.reviewer import Reviewer
 from anki.hooks import wrap
-from aqt.utils import askUser
 
-def onLoadNote(self, focusTo=None):
-    pass
+from .utils.configrw import getConfig, setConfig
 
+import json
 
-Editor.loadNote = wrap(Editor.loadNote, onLoadNote, "after")
+def initCSS(self, *args):
+    redText = getConfig('redText', '')
+    orangeText = getConfig('orangeText', '')
+    greenText = getConfig('greenText', '')
+    blueText = getConfig('blueText', '')
+
+    self.web.eval("""
+(function () {
+  // innerHTML of style element is read-only. remove & recreate css
+  $('#flag-label').remove()
+  $('head').append(`
+  <style id="flag-label">
+    #_flag::after {
+      display: inline-block;
+      padding-left: 0.5em;
+      transform: translateY(-0.2em);
+      font-size: .6em;
+      -webkit-text-stroke-width: initial;
+      color: #666;
+    }
+    #_flag[style*="rgb(255, 102, 102)"]::after {
+      content: %s;
+    }
+    #_flag[style*="rgb(255, 153, 0)"]::after {
+      content: %s;
+    }
+    #_flag[style*="rgb(119, 255, 119)"]::after {
+      content: %s;
+    }
+    #_flag[style*="rgb(119, 170, 255)"]::after {
+      content: %s;
+    }
+  </style>
+  `)
+})()
+
+""" % (
+    json.dumps(redText),
+    json.dumps(orangeText),
+    json.dumps(greenText),
+    json.dumps(blueText)
+))
+
+Reviewer.nextCard = wrap(Reviewer.nextCard, initCSS, "after")
 
 
