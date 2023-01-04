@@ -33,16 +33,16 @@ def initCSS(self, *args):
       -webkit-text-stroke-width: initial;
       color: #666;
     }
-    #_flag[style*="rgb(255, 102, 102)"]::after {
+    #_flag[style*="rgb(255, 102, 102)"]::after, #_flag[style*="--flag1-fg"]::after {
       content: %s;
     }
-    #_flag[style*="rgb(255, 153, 0)"]::after {
+    #_flag[style*="rgb(255, 153, 0)"]::after, #_flag[style*="--flag2-fg"]::after {
       content: %s;
     }
-    #_flag[style*="rgb(119, 255, 119)"]::after {
+    #_flag[style*="rgb(119, 255, 119)"]::after, #_flag[style*="--flag3-fg"]::after {
       content: %s;
     }
-    #_flag[style*="rgb(119, 170, 255)"]::after {
+    #_flag[style*="rgb(119, 170, 255)"]::after, #_flag[style*="--flag4-fg"]::after {
       content: %s;
     }
   </style>
