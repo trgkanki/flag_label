@@ -31,7 +31,10 @@ def initCSS(self, *args):
       transform: translateY(-0.2em);
       font-size: .6em;
       -webkit-text-stroke-width: initial;
-      color: inherit;
+      color: #666;
+    }
+    .nightMode #_flag::after {
+      color: white;
     }
     #_flag[style*="rgb(255, 102, 102)"]::after, #_flag[style*="--flag1-fg"]::after {
       content: %s;
