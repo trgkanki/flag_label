@@ -31,7 +31,7 @@ def initCSS(self, *args):
       transform: translateY(-0.2em);
       font-size: .6em;
       -webkit-text-stroke-width: initial;
-      color: #666;
+      color: inherit;
     }
     #_flag[style*="rgb(255, 102, 102)"]::after, #_flag[style*="--flag1-fg"]::after {
       content: %s;
