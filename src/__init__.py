@@ -18,6 +18,9 @@ def initCSS(self, *args):
     orangeText = getConfig('orangeText', '')
     greenText = getConfig('greenText', '')
     blueText = getConfig('blueText', '')
+    pinkText = getConfig('pinkText', '')
+    turquoiseText = getConfig('turquoiseText', '')
+    purpleText = getConfig('purpleText', '')
 
     self.web.eval("""
 (function () {
@@ -45,6 +48,15 @@ def initCSS(self, *args):
     #_flag[style*="rgb(119, 170, 255)"]::after, #_flag[style*="--flag4-fg"]::after {
       content: %s;
     }
+    #_flag[style*="rgb(240, 151, 228)"]::after, #_flag[style*="--flag5-fg"]::after {
+      content: %s;
+    }
+    #_flag[style*="rgb(92, 207, 202)"]::after, #_flag[style*="--flag6-fg"]::after {
+      content: %s;
+    }
+    #_flag[style*="rgb(159, 99, 211)"]::after, #_flag[style*="--flag7-fg"]::after {
+      content: %s;
+    }
   </style>
   `)
 })()
@@ -53,7 +65,10 @@ def initCSS(self, *args):
     json.dumps(redText),
     json.dumps(orangeText),
     json.dumps(greenText),
-    json.dumps(blueText)
+    json.dumps(blueText),
+    json.dumps(pinkText),
+    json.dumps(turquoiseText),
+    json.dumps(purpleText)
 ))
 
 Reviewer.nextCard = wrap(Reviewer.nextCard, initCSS, "after")
