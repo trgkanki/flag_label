@@ -1,7 +1,7 @@
 {
-  "name": "addon_template",
+  "name": "flag_label",
   "version": "23.1.4i108",
-  "description": "template for trgkanki's addon",
+  "description": "label for each flag",
   "scripts": {
     "build": "",
     "dist": "node dist.js"
