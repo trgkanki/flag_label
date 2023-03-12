@@ -8,19 +8,20 @@
 
 from aqt.reviewer import Reviewer
 from anki.hooks import wrap
+from .flagLabel import getFlagLabel
 
 from .utils.configrw import getConfig, setConfig
 
 import json
 
 def initCSS(self, *args):
-    redText = getConfig('redText', '')
-    orangeText = getConfig('orangeText', '')
-    greenText = getConfig('greenText', '')
-    blueText = getConfig('blueText', '')
-    pinkText = getConfig('pinkText', '')
-    turquoiseText = getConfig('turquoiseText', '')
-    purpleText = getConfig('purpleText', '')
+    redText = getFlagLabel(1)
+    orangeText = getFlagLabel(2)
+    greenText = getFlagLabel(3)
+    blueText = getFlagLabel(4)
+    pinkText = getFlagLabel(5)
+    turquoiseText = getFlagLabel(6)
+    purpleText = getFlagLabel(7)
 
     self.web.eval("""
 (function () {
@@ -65,15 +66,14 @@ def initCSS(self, *args):
 })()
 
 """ % (
-    json.dumps(redText),
-    json.dumps(orangeText),
-    json.dumps(greenText),
-    json.dumps(blueText),
-    json.dumps(pinkText),
-    json.dumps(turquoiseText),
-    json.dumps(purpleText)
-))
+        json.dumps(redText),
+        json.dumps(orangeText),
+        json.dumps(greenText),
+        json.dumps(blueText),
+        json.dumps(pinkText),
+        json.dumps(turquoiseText),
+        json.dumps(purpleText)
+    ))
+
 
 Reviewer.nextCard = wrap(Reviewer.nextCard, initCSS, "after")
-
-
