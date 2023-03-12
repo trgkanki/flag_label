@@ -13,14 +13,15 @@ from .utils.configrw import getConfig, setConfig
 
 import json
 
+
 def initCSS(self, *args):
-    redText = getConfig('redText', '')
-    orangeText = getConfig('orangeText', '')
-    greenText = getConfig('greenText', '')
-    blueText = getConfig('blueText', '')
-    pinkText = getConfig('pinkText', '')
-    turquoiseText = getConfig('turquoiseText', '')
-    purpleText = getConfig('purpleText', '')
+    redText = getConfig('redText', 1)
+    orangeText = getConfig('orangeText', 2)
+    greenText = getConfig('greenText', 3)
+    blueText = getConfig('blueText', 4)
+    pinkText = getConfig('pinkText', 5)
+    turquoiseText = getConfig('turquoiseText', 6)
+    purpleText = getConfig('purpleText', 7)
 
     self.web.eval("""
 (function () {
@@ -62,15 +63,14 @@ def initCSS(self, *args):
 })()
 
 """ % (
-    json.dumps(redText),
-    json.dumps(orangeText),
-    json.dumps(greenText),
-    json.dumps(blueText),
-    json.dumps(pinkText),
-    json.dumps(turquoiseText),
-    json.dumps(purpleText)
-))
+        json.dumps(redText),
+        json.dumps(orangeText),
+        json.dumps(greenText),
+        json.dumps(blueText),
+        json.dumps(pinkText),
+        json.dumps(turquoiseText),
+        json.dumps(purpleText)
+    ))
+
 
 Reviewer.nextCard = wrap(Reviewer.nextCard, initCSS, "after")
-
-

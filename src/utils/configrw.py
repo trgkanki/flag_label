@@ -1,5 +1,6 @@
 from aqt import mw
-from aqt.utils import askUser
+from aqt.flags import FlagManager
+
 import os
 
 
@@ -10,12 +11,28 @@ def getCurrentAddonName():
     addons21Index = fPathParts.index('addons21')
     return fPathParts[addons21Index + 1]
 
-def getConfig(key, default=None):
+def getDefaultLabel(flag_index: int) -> str:
+    """
+    :param flag_index: The integer by which the flag is represented internally (1-7).
+    :return: label: The default label
+    """
+    try:
+        flag = FlagManager.get_flag(flag_index)
+        label = flag.label
+    finally:
+        return label or ''
+
+
+def getConfig(key, flag_index: int):
     addonName = getCurrentAddonName()
     config = mw.addonManager.getConfig(addonName)
+    defaultLabel = getDefaultLabel(flag_index)
+
     if not config:
-        return default
-    return config.get(key, default)
+        return defaultLabel
+
+    return config.get(key, defaultLabel)
+
 
 def setConfig(key, value):
     addonName = getCurrentAddonName()
