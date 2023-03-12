@@ -33,6 +33,9 @@ def initCSS(self, *args):
       -webkit-text-stroke-width: initial;
       color: #666;
     }
+    .nightMode #_flag::after {
+      color: white;
+    }
     #_flag[style*="rgb(255, 102, 102)"]::after, #_flag[style*="--flag1-fg"]::after {
       content: %s;
     }
