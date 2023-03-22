@@ -8,16 +8,23 @@
 
 from aqt.reviewer import Reviewer
 from anki.hooks import wrap
+from .flags import getFlagLabel, flagDefs
 
 from .utils.configrw import getConfig, setConfig
 
 import json
 
 def initCSS(self, *args):
-    redText = getConfig('redText', '')
-    orangeText = getConfig('orangeText', '')
-    greenText = getConfig('greenText', '')
-    blueText = getConfig('blueText', '')
+    flagsCSS = "\n".join(["""\
+    #_flag[style*="{color}"]::after, #_flag[style*="--flag{index}-fg"]::after, #_flag[style*="--flag-{index}"]::after {{
+      content: {text};
+    }}
+""".format(
+        color=flagDef.defaultColor,
+        index=index,
+        text=json.dumps(getFlagLabel(index))
+      ) for index, flagDef in flagDefs.items()
+    ])
 
     self.web.eval("""
 (function () {
@@ -36,29 +43,13 @@ def initCSS(self, *args):
     .nightMode #_flag::after {
       color: white;
     }
-    #_flag[style*="rgb(255, 102, 102)"]::after, #_flag[style*="--flag1-fg"]::after, #_flag[style*="--flag-1"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(255, 153, 0)"]::after, #_flag[style*="--flag2-fg"]::after, #_flag[style*="--flag-2"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(119, 255, 119)"]::after, #_flag[style*="--flag3-fg"]::after, #_flag[style*="--flag-3"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(119, 170, 255)"]::after, #_flag[style*="--flag4-fg"]::after, #_flag[style*="--flag-4"]::after {
-      content: %s;
-    }
+
+%s
   </style>
   `)
 })()
 
-""" % (
-    json.dumps(redText),
-    json.dumps(orangeText),
-    json.dumps(greenText),
-    json.dumps(blueText)
-))
+""" % (flagsCSS,))
+
 
 Reviewer.nextCard = wrap(Reviewer.nextCard, initCSS, "after")
-
-
