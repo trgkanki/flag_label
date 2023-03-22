@@ -8,20 +8,23 @@
 
 from aqt.reviewer import Reviewer
 from anki.hooks import wrap
-from .flagLabel import getFlagLabel
+from .flags import getFlagLabel, flagDefs
 
 from .utils.configrw import getConfig, setConfig
 
 import json
 
 def initCSS(self, *args):
-    redText = getFlagLabel(1)
-    orangeText = getFlagLabel(2)
-    greenText = getFlagLabel(3)
-    blueText = getFlagLabel(4)
-    pinkText = getFlagLabel(5)
-    turquoiseText = getFlagLabel(6)
-    purpleText = getFlagLabel(7)
+    flagsCSS = "\n".join(["""\
+    #_flag[style*="{color}"]::after, #_flag[style*="--flag{index}-fg"]::after, #_flag[style*="--flag-{index}"]::after {{
+      content: {text};
+    }}
+""".format(
+        color=flagDef.defaultColor,
+        index=index,
+        text=json.dumps(getFlagLabel(index))
+      ) for index, flagDef in flagDefs.items()
+    ])
 
     self.web.eval("""
 (function () {
@@ -40,40 +43,13 @@ def initCSS(self, *args):
     .nightMode #_flag::after {
       color: white;
     }
-    #_flag[style*="rgb(255, 102, 102)"]::after, #_flag[style*="--flag1-fg"]::after, #_flag[style*="--flag-1"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(255, 153, 0)"]::after, #_flag[style*="--flag2-fg"]::after, #_flag[style*="--flag-2"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(119, 255, 119)"]::after, #_flag[style*="--flag3-fg"]::after, #_flag[style*="--flag-3"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(119, 170, 255)"]::after, #_flag[style*="--flag4-fg"]::after, #_flag[style*="--flag-4"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(240, 151, 228)"]::after, #_flag[style*="--flag5-fg"]::after, #_flag[style*="--flag-5"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(92, 207, 202)"]::after, #_flag[style*="--flag6-fg"]::after, #_flag[style*="--flag-6"]::after {
-      content: %s;
-    }
-    #_flag[style*="rgb(159, 99, 211)"]::after, #_flag[style*="--flag7-fg"]::after, #_flag[style*="--flag-7"]::after {
-      content: %s;
-    }
+
+%s
   </style>
   `)
 })()
 
-""" % (
-        json.dumps(redText),
-        json.dumps(orangeText),
-        json.dumps(greenText),
-        json.dumps(blueText),
-        json.dumps(pinkText),
-        json.dumps(turquoiseText),
-        json.dumps(purpleText)
-    ))
+""" % (flagsCSS,))
 
 
 Reviewer.nextCard = wrap(Reviewer.nextCard, initCSS, "after")
